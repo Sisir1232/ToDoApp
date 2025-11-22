@@ -56,6 +56,17 @@ public class TaskService {
         return utask;
 
     }
+    public Task deleteTask(Long id) {
+        taskRepo.deleteById(id);
+        return taskRepo.findById(id)
+                        .orElseThrow(()->new ResourceNotFoundException("user not found by id"+id));
+    }
+    public List<Task> getUncompletedTasks() {
+        return taskRepo.findByCompletedFalse();
+    }
+    public List<Task> getCompletedTasks() {
+        return taskRepo.findByCompletedTrue();
+    }
     
     
 

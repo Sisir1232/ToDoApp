@@ -1,6 +1,7 @@
 package com.basnet.todoapp.controller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +38,18 @@ public class TaskController {
     @PatchMapping("/update/{id}")
     public Task patchTask(@PathVariable Long id , @RequestBody Task updatedTask){
         return taskService.updateTask(id,updatedTask);
+    }
+    @DeleteMapping("/delete/{id}")
+    public Task deleteTask(@PathVariable Long id){
+        return taskService.deleteTask(id);
+    }
+    @GetMapping("/task/uncompleted")
+    public List<Task> getUncompletedTasks(){
+        return taskService.getUncompletedTasks();
+    }
+     @GetMapping("/task/completed")
+    public List<Task> getCompletedTasks(){
+        return taskService.getCompletedTasks();
     }
 
 }
