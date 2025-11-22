@@ -24,5 +24,39 @@ public class TaskService {
        return  taskRepo.findById(id)
                       .orElseThrow(()->new ResourceNotFoundException("not found with id "+ id));
     }
+    public Task updateTask(Long id, Task updatedTask) {
+        Task utask=taskRepo.findById(id)
+                           .orElseThrow(()->new ResourceNotFoundException("user not found by id"+id));
+        utask.setId(id);
+        utask.setTitle(updatedTask.getTitle());
+        utask.setDescription(updatedTask.getDescription());
+        utask.setCompleted(updatedTask.isCompleted());
+        taskRepo.save(utask);
+        return utask;
+
+    }
+    public Task patchTask(Long id, Task updatedTask) {
+        Task utask=taskRepo.findById(id)
+                           .orElseThrow(()->new ResourceNotFoundException("user not found by id"+id));
+        utask.setId(id);
+        if(updatedTask.getTitle()!=null){
+            utask.setTitle(updatedTask.getTitle());
+        }
+        if(updatedTask.getDescription()!=null){
+            utask.setTitle(updatedTask.getDescription());
+        }
+        if(updatedTask.getDescription()!=null){
+            utask.setTitle(updatedTask.getDescription());
+        }
+        if(updatedTask.isCompleted()){
+            utask.setCompleted(true);
+        }
+        
+        taskRepo.save(utask);
+        return utask;
+
+    }
+    
+    
 
 }
