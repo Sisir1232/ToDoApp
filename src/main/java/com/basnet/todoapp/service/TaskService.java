@@ -1,5 +1,6 @@
 package com.basnet.todoapp.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,6 +68,11 @@ public class TaskService {
     public List<Task> getCompletedTasks() {
         return taskRepo.findByCompletedTrue();
     }
+    public List<Task> getTaskByDate(LocalDate startDate, LocalDate endDate) {
+            return taskRepo.findByCreatedAtBetween(startDate,endDate);
+        }
+
+
     
     
 

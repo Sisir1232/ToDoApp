@@ -1,5 +1,6 @@
 package com.basnet.todoapp.entities;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -23,9 +24,9 @@ public class Task {
     private String title;
     private  String description;
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
     @UpdateTimestamp
-    private LocalDateTime updatedAt;
+    private LocalDate updatedAt;
     private boolean completed=false;
 
 }
