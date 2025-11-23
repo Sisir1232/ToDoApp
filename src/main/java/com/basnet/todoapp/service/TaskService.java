@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.basnet.todoapp.entities.Task;
@@ -18,8 +20,8 @@ public class TaskService {
 	public Task  saveTask(Task task) {
 		return taskRepo.save(task);
 	}
-    public List<Task> getTasks() {
-       return  taskRepo.findAll();
+    public Page<Task> getTasks(Pageable pageable) {
+       return  taskRepo.findAll(pageable);
     }
     public Task getTaskById(Long id) {
        return  taskRepo.findById(id)
