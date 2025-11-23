@@ -1,64 +1,103 @@
 package com.basnet.todoapp.controller;
+
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.basnet.todoapp.entities.Task;
-// import com.basnet.todoapp.exception.ResourceNotFoundException;
 import com.basnet.todoapp.service.TaskService;
 
 @RestController
+@RequestMapping("/tasks")
 public class TaskController {
+
     @Autowired
     TaskService taskService;
+
     @PostMapping("/create")
-    public Task  createTask(@RequestBody Task task){
-        return taskService.saveTask(task);
- 
+    public ResponseEntity<Task> createTask(@RequestBody Task task) {
+        Task savedTask = taskService.saveTask(task);
+        return new ResponseEntity<>(savedTask, HttpStatus.CREATED);
     }
-    @GetMapping("/task")
-    public List<Task> getTasks(){
-        return taskService.getTasks();
+
+    @GetMapping
+    public ResponseEntity<List<Task>> getTasks() {
+        List<Task> tasks = taskService.getTasks();
+        if (tasks.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
-     @GetMapping("/task/{id}")
-    public Task getTaskById( @PathVariable Long id){
-        return taskService.getTaskById(id);
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
+        Task task = taskService.getTaskById(id);
+        if (task == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(task, HttpStatus.OK);
     }
+
     @PutMapping("/update/{id}")
-    public Task updateTask(@PathVariable Long id , @RequestBody Task updatedTask){
-        return taskService.updateTask(id,updatedTask);
+    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task updatedTask) {
+        Task task = taskService.updateTask(id, updatedTask);
+        if (task == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(task, HttpStatus.OK);
     }
+
     @PatchMapping("/update/{id}")
-    public Task patchTask(@PathVariable Long id , @RequestBody Task updatedTask){
-        return taskService.updateTask(id,updatedTask);
+    public ResponseEntity<Task> patchTask(@PathVariable Long id, @RequestBody Task updatedTask) {
+        Task task = taskService.updateTask(id, updatedTask);
+        if (task == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(task, HttpStatus.OK);
     }
+
     @DeleteMapping("/delete/{id}")
-    public Task deleteTask(@PathVariable Long id){
-        return taskService.deleteTask(id);
+    public ResponseEntity<Task> deleteTask(@PathVariable Long id) {
+        Task task = taskService.deleteTask(id);
+        if (task == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(task, HttpStatus.OK);
     }
-    @GetMapping("/task/uncompleted")
-    public List<Task> getUncompletedTasks(){
-        return taskService.getUncompletedTasks();
+
+    @GetMapping("/uncompleted")
+    public ResponseEntity<List<Task>> getUncompletedTasks() {
+        List<Task> tasks = taskService.getUncompletedTasks();
+        if (tasks.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
-     @GetMapping("/task/completed")
-    public List<Task> getCompletedTasks(){
-        return taskService.getCompletedTasks();
+
+    @GetMapping("/completed")
+    public ResponseEntity<List<Task>> getCompletedTasks() {
+        List<Task> tasks = taskService.getCompletedTasks();
+        if (tasks.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
+
     @GetMapping("/filter")
-    public List<Task> getTaskByDate(@RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate startDate,@RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate endDate){
-     return taskService.getTaskByDate(startDate,endDate);
+    public ResponseEntity<List<Task>> getTaskByDate(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
 
+        List<Task> tasks = taskService.getTaskByDate(startDate, endDate);
+        if (tasks.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
-
 }
+
