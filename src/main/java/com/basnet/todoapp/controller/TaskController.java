@@ -1,8 +1,6 @@
 package com.basnet.todoapp.controller;
-
 import java.time.LocalDate;
 import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,23 +8,19 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import com.basnet.todoapp.entities.Task;
 import com.basnet.todoapp.service.TaskService;
-
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
-
     @Autowired
     TaskService taskService;
-
     @PostMapping("/create")
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
         Task savedTask = taskService.saveTask(task);
         return new ResponseEntity<>(savedTask, HttpStatus.CREATED);
     }
-
+    
     @GetMapping("/")
     public ResponseEntity<Page<Task>> getTasks(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "10") int size) {
         PageRequest pageable=PageRequest.of(page,size);
