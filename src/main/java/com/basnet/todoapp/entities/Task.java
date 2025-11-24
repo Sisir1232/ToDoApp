@@ -20,7 +20,7 @@ public class Task {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long Id;
     @NotNull(message = "Title cannot be null")
-    @Size(min = 3, max = 20, message = "Title must be between 3 and 20 characters")
+    @Size(min = 3, max = 50, message = "Title must be between 3 and 20 characters")
     private String title;
      @Size(max = 300, message = "Description cannot exceed 300 characters")
     private  String description;
