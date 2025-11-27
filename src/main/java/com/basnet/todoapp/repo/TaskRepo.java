@@ -13,6 +13,7 @@ public interface TaskRepo extends JpaRepository<Task,Long> {
     public List<Task> findByCompletedFalse();
     public List<Task> findByCompletedTrue();
     public List<Task> findByCreatedAtBetween(LocalDate startDate, LocalDate endDate);
+    public Task getTaskByid();
 
 
 }
